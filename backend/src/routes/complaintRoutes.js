@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 const {
   createComplaint,
   getAllComplaints,
@@ -11,10 +12,21 @@ const {
   getComplaintByTicket,
 } = require("../controllers/complaintControllers");
 
+// Configurar multer para manejar la carga de archivos
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "src/uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage });
+
 //Denuncias con datos de usuario
 
 // Ruta para crear una nueva denuncia
-router.post("/", createComplaint);
+router.post("/", upload.single("imagenes"), createComplaint);
 
 // Ruta para obtener todas las denuncias
 router.get("/", getAllComplaints);

@@ -4,6 +4,9 @@ const Complaint = require("../models/complaintModels");
 const createComplaint = (req, res) => {
   const data = req.body;
   data.ticket = uuidv4();
+  if (req.file) {
+    data.imagenes = req.file.path; // Guardar la ruta de la imagen
+  }
   Complaint.create(data, (err, results) => {
     if (err) {
       console.log(err);
