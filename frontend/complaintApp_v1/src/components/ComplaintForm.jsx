@@ -35,6 +35,17 @@ const ComplaintForm = () => {
       const response = await sendComplaint(formDataToSend);
       console.log("Denuncia enviada exitosamente:", response);
       setTicket(response.ticket);
+      setFormData({
+        nombre: "",
+        apellido: "",
+        celular: "",
+        titulo: "",
+        descripcion: "",
+        mail: "",
+        imagenes: null,
+        ticket: "",
+        password: "",
+      });
       // Aquí puedes manejar la respuesta, como mostrar un mensaje de éxito
     } catch (error) {
       console.error("Error al enviar la denuncia:", error);
@@ -82,6 +93,7 @@ const ComplaintForm = () => {
           name="descripcion"
           id="descripcion"
           placeholder="Descripción"
+          value={formData.descripcion}
           onChange={handleChange}
           className="w-full p-2 border rounded"
         ></textarea>
@@ -99,14 +111,7 @@ const ComplaintForm = () => {
           onChange={handleChange}
           className="w-full p-2 border rounded"
         />
-        <input
-          type="text"
-          name="ticket"
-          placeholder="Ticket"
-          value={formData.ticket}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-        />
+
         <input
           type="password"
           name="password"
@@ -122,7 +127,7 @@ const ComplaintForm = () => {
         </p>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
           Enviar Denuncia
         </button>

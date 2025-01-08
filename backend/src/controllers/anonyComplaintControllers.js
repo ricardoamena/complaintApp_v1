@@ -1,9 +1,13 @@
 const { v4: uuidv4 } = require("uuid");
 const AnonyComplaint = require("../models/anonyComplaintModels");
 
+
 const createAnonyComplaint = (req, res) => {
   const data = req.body;
   data.ticket = uuidv4();
+  if (req.file) {
+    data.imagenes = req.file.path; // Guardar la ruta de la imagen
+  }
   AnonyComplaint.create(data, (err, results) => {
     if (err) {
       console.log(err);

@@ -4,6 +4,7 @@ import "./Index.css";
 import Navbar from "./components/Navbar";
 import Welcome from "./components/Welcome";
 import ComplaintForm from "./components/ComplaintForm";
+import AnonyComplaintForm from "./components/AnonyComplaintForm";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/complaint" element={<ComplaintForm />} />
+          <Route path="/anony-complaint" element={<AnonyComplaintForm/>} />
         </Routes>
       </div>
     </>

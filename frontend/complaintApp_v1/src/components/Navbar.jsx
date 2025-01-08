@@ -5,12 +5,16 @@ const Navbar = () => {
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-white text-lg">Complaint App</div>
-        <div className="bg-cyan-600 p-2 rounded-lg hover:bg-cyan-700">
+        <div className="text-white text-lg">
           <Link
-            to="/admin-login"
-            className="text-white transition-colors duration-300 ease-in-out"
+            to="/"
+            className="text-white transition-colors duration-1000 ease-in-out "
           >
+            Complaint App
+          </Link>
+        </div>
+        <div className="bg-cyan-600 p-2 rounded-lg transition-colors ease-in-out duration-800 hover:bg-cyan-700">
+          <Link to="/admin-login" className="text-white">
             Administrador
           </Link>
         </div>
