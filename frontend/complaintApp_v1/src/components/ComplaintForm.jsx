@@ -14,6 +14,8 @@ const ComplaintForm = () => {
     password: "",
   });
 
+  const [ticket, setTicket] = useState("");
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData({
@@ -32,6 +34,7 @@ const ComplaintForm = () => {
     try {
       const response = await sendComplaint(formDataToSend);
       console.log("Denuncia enviada exitosamente:", response);
+      setTicket(response.ticket);
       // Aquí puedes manejar la respuesta, como mostrar un mensaje de éxito
     } catch (error) {
       console.error("Error al enviar la denuncia:", error);
@@ -124,6 +127,19 @@ const ComplaintForm = () => {
           Enviar Denuncia
         </button>
       </form>
+      {ticket && (
+        <div className="mt-4">
+          <h3 className="text-xl">
+            Código de seguimiento para tu denuncia, copialo para poder consultar{" "}
+            <br />
+            posteriormente el estado de tu denuncia, junto con la contraseña
+            elegida.
+          </h3>
+          <p className="mt-2 p-4 bg-green-300 border rounded inline-block">
+            {ticket}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
