@@ -23,6 +23,12 @@ const Welcome = () => {
           Denuncia Anónima
         </Link>
       </div>
+      <Link
+          to="/status-complaint"
+          className="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600"
+        >
+          Consultar el estado de tu Denuncia
+        </Link>
     </div>
   );
 };

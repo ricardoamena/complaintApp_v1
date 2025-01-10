@@ -10,13 +10,23 @@ const AnonyComplaintForm = () => {
   });
 
   const [ticket, setTicket] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setAnonyData({
-      ...anonyData,
-      [name]: name === "imagenes" ? files[0] : value,
-    });
+    if (name === "imagenes" && files.length > 0) {
+      const file = files[0];
+      setImagePreview(URL.createObjectURL(file));
+      setAnonyData({
+        ...anonyData,
+        imagenes: file,
+      });
+    } else {
+      setAnonyData({
+        ...anonyData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -35,9 +45,15 @@ const AnonyComplaintForm = () => {
         imagenes: null,
         password: "",
       });
-      document.getElementById("imagenes").value = null;
+      setImagePreview(null);
+      document.getElementById("imagenes-anony").value = null;
+      response.ticket &&
+        alert(
+          "Denuncia enviada exitosamente. Guarda por favor tu ticket de seguimiento."
+        );
     } catch (error) {
       console.error("Error al enviar la denuncia:", error);
+      alert("Error al enviar la denuncia, por favor intenta nuevamente.");
     }
   };
 
@@ -64,10 +80,19 @@ const AnonyComplaintForm = () => {
         <input
           type="file"
           name="imagenes"
-          id="imagenes"
+          id="imagenes-anony"
           onChange={handleChange}
           className="w-full p-2 border rounded shadow-md"
         />
+        {imagePreview && (
+          <div className="mt-2">
+            <img
+              src={imagePreview}
+              alt="Previsualización de la imagen"
+              className="h-32 w-32 rounded border font-mono object-cover"
+            />
+          </div>
+        )}
         <input
           type="password"
           name="password"
@@ -84,14 +109,14 @@ const AnonyComplaintForm = () => {
         </button>
       </form>
       {ticket && (
-        <div className="mt-4">
-          <h3 className="text-xl">
-            Código de seguimiento para tu denuncia, copialo para poder consultar{" "}
-            <br />
-            posteriormente el estado de tu denuncia, junto con la contraseña
-            elegida.
-          </h3>
-          <p className="mt-2 p-4 bg-green-300 border rounded inline-block">
+        <div className="mt-4 p-4 bg-blue-100 border rounded">
+          <h3 className="text-xl font-medium mb-2"></h3>
+          Código de seguimiento para tu denuncia:
+          <p className="text-gray-600 mb-2">
+            Copialo para poder consultar posteriormente el estado de tu
+            denuncia, junto con la contraseña elegida.
+          </p>
+          <p className="p-4 bg-green-300 border rounded inline-block font-mono text-lg">
             {ticket}
           </p>
         </div>

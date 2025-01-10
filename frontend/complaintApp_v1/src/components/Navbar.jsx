@@ -8,7 +8,7 @@ const Navbar = () => {
         <div className="text-white text-lg">
           <Link
             to="/"
-            className="text-white transition-colors duration-1000 ease-in-out "
+            className="text-white transition-transform duration-500 ease-in-out transform hover:scale-110"
           >
             Complaint App
           </Link>

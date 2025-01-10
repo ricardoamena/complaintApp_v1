@@ -25,15 +25,31 @@ const createComplaint = (req, res) => {
 
 const getComplaintByTicket = (req, res) => {
   const { ticket, password } = req.body;
+
+  if (!ticket || !password) {
+    return res.status(400).json({
+      success: 0,
+      message: "Ticket y contraseña son requeridos",
+    });
+  }
+
   Complaint.getByTicket(ticket, password, (err, results) => {
     if (err) {
       console.log(err);
       return res.status(500).json({
         success: 0,
-        message: "Error al obtener la denuncia anónima",
+        message: "Error al obtener la denuncia",
       });
     }
-    return res.status(200).json(results);
+
+    if (!results || results.length === 0) {
+      return res.status(404).json({
+        success: 0,
+        message: "No se encontró la denuncia con ese ticket y contraseña",
+      });
+    }
+
+    return res.status(200).json(results[0]);
   });
 };
 

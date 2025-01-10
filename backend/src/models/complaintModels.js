@@ -26,7 +26,18 @@ const Complaint = {
 
   getByTicket: (ticket, password, callback) => {
     const query = "SELECT * FROM denuncia WHERE ticket = ? AND password = ?";
-    conexion.query(query, [ticket, password], callback);
+    console.log("Ejecutando consulta:", {
+      consulta: query,
+      parametros: [ticket, "***oculta***"],
+    });
+    conexion.query(query, [ticket, password], (err, results) => {
+      if (err) {
+        console.error("Error en la consulta:", err);
+        return callback(err);
+      }
+      console.log("Resultados de la consulta:", results);
+      callback(null, results);
+    });
   },
 
   getAll: (callback) => {

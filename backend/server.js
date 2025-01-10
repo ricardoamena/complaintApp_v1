@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const conexion = require("./src/config/db");
 const cors = require("cors");
 require("dotenv").config();
@@ -12,6 +13,9 @@ const PORT = process.env.PORT || 8080;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Configura el directorio de archivos estáticos
+app.use("/uploads", express.static(path.join(__dirname, "src/uploads")));
 
 // Rutas
 // Denuncias
