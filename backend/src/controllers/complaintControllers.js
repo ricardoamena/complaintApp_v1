@@ -4,8 +4,8 @@ const Complaint = require("../models/complaintModels");
 const createComplaint = (req, res) => {
   const data = req.body;
   data.ticket = uuidv4();
-  if (req.file) {
-    data.imagenes = req.file.path; // Guardar la ruta de la imagen
+  if (req.files && req.files.length > 0) {
+    data.imagenes = req.files.map((file) => file.path);
   }
   Complaint.create(data, (err, results) => {
     if (err) {
@@ -13,6 +13,7 @@ const createComplaint = (req, res) => {
       return res.status(500).json({
         success: 0,
         message: "Error al guardar la denuncia",
+        error: err.message,
       });
     }
     return res.status(200).json({

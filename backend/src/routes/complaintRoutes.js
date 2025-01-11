@@ -33,6 +33,7 @@ const upload = multer({
     fileSize: 1024 * 1024 * 2, // 2MB
     files: 2, // Maximo de archivos
   },
+  
 });
 
 //Denuncias con datos de usuario

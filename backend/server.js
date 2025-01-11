@@ -14,6 +14,12 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
+// Manejo de errores globales
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('¡Algo salió mal!');
+});
+
 // Configura el directorio de archivos estáticos
 app.use("/uploads", express.static(path.join(__dirname, "src/uploads")));
 

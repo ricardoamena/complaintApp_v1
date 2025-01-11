@@ -18,15 +18,27 @@ const storage = multer.diskStorage({
     cb(null, "src/uploads/");
   },
   filename: (req, file, cb) => {
+    //Validad tipo de archivo
+    const fileTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
+    if (!fileTypes.includes(file.mimetype)) {
+      cb(new Error("Formato de archivo no permitido"));
+      return;
+    }
     cb(null, Date.now() + "-" + file.originalname);
   },
 });
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 1024 * 1024 * 2, // 2MB
+    files: 2, // Maximo de archivos
+  },
+});
 
 // Denuncias anónimas
 
 // Ruta para crear una nueva denuncia anónima
-router.post("/", upload.single("imagenes"), createAnonyComplaint);
+router.post("/", upload.array("imagenes", 2), createAnonyComplaint);
 
 // Ruta para obtener todas las denuncias anónimas
 router.get("/", getAllAnonyComplaints);
