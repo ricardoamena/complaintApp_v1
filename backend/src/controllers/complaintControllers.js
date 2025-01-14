@@ -5,7 +5,7 @@ const createComplaint = (req, res) => {
   const data = req.body;
   data.ticket = uuidv4();
   if (req.files && req.files.length > 0) {
-    data.imagenes = req.files.map((file) => file.path);
+    data.imagenes = req.files.map((file) => file.path.replace(/\\/g, "/"));
   }
   Complaint.create(data, (err, results) => {
     if (err) {

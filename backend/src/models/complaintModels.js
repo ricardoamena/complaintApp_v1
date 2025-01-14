@@ -2,6 +2,9 @@ const conexion = require("../config/db");
 
 const Complaint = {
   create: (data, callback) => {
+    const imagenes = Array.isArray(data.imagenes)
+      ? data.imagenes.join(",")
+      : data.imagenes;
     const query =
       "INSERT INTO denuncia (nombre, apellido, celular, titulo, descripcion, mail, imagenes, ticket, password, date, status, comentarios) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     conexion.query(
@@ -13,7 +16,7 @@ const Complaint = {
         data.titulo || null,
         data.descripcion || null,
         data.mail,
-        data.imagenes || null,
+        imagenes || null,
         data.ticket,
         data.password,
         new Date(),

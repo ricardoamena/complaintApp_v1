@@ -14,7 +14,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="bg-cyan-600 p-2 rounded-lg transition-colors ease-in-out duration-800 hover:bg-cyan-700">
-          <Link to="/admin-login" className="text-white">
+          <Link to="/admin/login" className="text-white">
             Administrador
           </Link>
         </div>

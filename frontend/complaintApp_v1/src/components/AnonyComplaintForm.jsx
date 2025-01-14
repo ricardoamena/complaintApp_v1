@@ -172,6 +172,7 @@ const AnonyComplaintForm = () => {
   return (
     <div className="container mx-auto p-4 shadow-md">
       <h2 className="text-2xl mb-4 mt-4">Ingresa tu Denuncia Anónima</h2>
+      <div className="h-2 w-full bg-gray-300 border rounded-md "></div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
