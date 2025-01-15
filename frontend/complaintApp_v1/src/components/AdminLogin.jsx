@@ -1,6 +1,7 @@
 import { useState } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import adminService from "../service/adminService";
 
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({
@@ -12,11 +13,17 @@ const AdminLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
-      //   await adminService.login(credentials.username, credentials.password);
-      navigate("/admin/dashboard");
+      const response = await adminService.login(credentials.username, credentials.password);
+      if (response.success === 1) {
+        navigate("/admin/dashboard");
+      } else {
+        setError(response.message || "Error en el inicio de sesión");
+      }
     } catch (error) {
-      setError(error.message);
+      console.error('Error en login:', error);
+      setError(error.message || "Error al intentar iniciar sesión");
     }
   };
 

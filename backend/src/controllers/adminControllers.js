@@ -4,10 +4,26 @@ const AnonyComplaint = require("../models/anonyComplaintModels");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const conexion = require("../config/db");
-require("dotenv").config;
+require("dotenv").config();
 
 const loginAdmin = (req, res) => {
+  // Login del administrador
   const { username, password } = req.body;
+  // Validar que se proporcionen las credenciales
+  if (!username || !password) {
+    return res.status(400).json({
+      success: 0,
+      message: "Usuario y contraseña son requeridos"
+    });
+  }
+
+  if (username.length < 3 || password.length < 6) {
+    return res.status(400).json({
+      success: 0,
+      message: "Credenciales inválidas"
+    });
+  }
+  // Buscar el admin en la base de datos
   Admin.getByUsername(username, (err, results) => {
     if (err) {
       console.log(err);
