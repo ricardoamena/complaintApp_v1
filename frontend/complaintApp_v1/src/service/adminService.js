@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:7070";
+const API_URL = "http://localhost:7070/api";
 
 // Configuracion de jwt
 const setAuthToken = (token) => {
@@ -35,26 +35,28 @@ const adminService = {
     }
   },
 
-  //Obtener todas las denuncias
   getAllComplaints: async () => {
     try {
-      const [complaints, anonyComplaints] = await Promise.all([
-        axios.get(`${API_URL}/complaints`),
-        axios.get(`${API_URL}/anony-complaints`),
-      ]);
-      //Combinar las denuncias con identificacion y anonimas
-      const complaintsData = complaints.data.map((c) => ({
-        ...c,
-        type: "identified",
-      }));
-      const anonyComplaintsData = anonyComplaints.data.map((c) => ({
-        ...c,
-        type: "anonymous",
-      }));
-      return [...complaintsData, ...anonyComplaintsData];
+      const response = await axios.get(`${API_URL}/complaints`);
+      return response.datav || [];
     } catch (error) {
+      console.error("Error:", error);
       throw (
-        error.response?.data || { message: "Error al cargar las denuncias" }
+        error.response?.data || { message: "Error al obtener las denuncias" }
+      );
+    }
+  },
+
+  getAllAnonyComplaints: async () => {
+    try {
+      const response = await axios.get(`${API_URL}/anony-complaints`);
+      return response.data || [];
+    } catch (error) {
+      console.error("Error:", error);
+      throw (
+        error.response?.data || {
+          message: "Error al obtener las denuncias anónimas",
+        }
       );
     }
   },

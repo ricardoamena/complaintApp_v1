@@ -17,7 +17,7 @@ app.use(express.json());
 // Manejo de errores globales
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('¡Algo salió mal!');
+  res.status(500).send("¡Algo salió mal!");
 });
 
 // Configura el directorio de archivos estáticos
@@ -25,10 +25,10 @@ app.use("/uploads", express.static(path.join(__dirname, "src/uploads")));
 
 // Rutas
 // Denuncias
-app.use("/denuncias", complaintRoutes);
-app.use("/denuncias-anonimas", anonyComplaintRoutes);
+app.use("/api/complaints", complaintRoutes);
+app.use("/api/anony-complaints", anonyComplaintRoutes);
 // Panel admin
-app.use("/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
   res.send("¡Hola, mundo!");
