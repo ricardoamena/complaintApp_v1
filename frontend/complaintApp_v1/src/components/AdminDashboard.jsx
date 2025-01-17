@@ -40,7 +40,7 @@ const AdminDashboard = () => {
         identified: normalComplaints.map((complaint) => ({
           ...complaint,
           type: "identified",
-          status: complaint.status || "pending", 
+          status: complaint.status || "pending",
         })),
         anonymous: anonComplaints.map((complaint) => ({
           ...complaint,
@@ -74,22 +74,34 @@ const AdminDashboard = () => {
     }
   };
 
-  // Combinar y filtrar las denuncias
   const getFilteredComplaints = () => {
     let combinedComplaints = [];
 
-    if (filters.type === "all" || filters.type === "identified") {
-      combinedComplaints = [...combinedComplaints, ...complaints.identified];
-    }
-    if (filters.type === "all" || filters.type === "anonymous") {
-      combinedComplaints = [...combinedComplaints, ...complaints.anonymous];
+    // Primero combinamos las denuncias según el tipo seleccionado
+    if (filters.type === "all") {
+      combinedComplaints = [...complaints.identified, ...complaints.anonymous];
+    } else if (filters.type === "identified") {
+      combinedComplaints = [...complaints.identified];
+    } else if (filters.type === "anonymous") {
+      combinedComplaints = [...complaints.anonymous];
     }
 
-    return combinedComplaints.filter(
-      (complaint) =>
-        filters.status === "all" || complaint.status === filters.status
-    );
+    // Luego filtramos por estado
+    if (filters.status !== "all") {
+      const statusMap = {
+        pending: "Pendiente",
+        resolved: "Resuelto",
+      };
+
+      combinedComplaints = combinedComplaints.filter(
+        (complaint) => complaint.status === statusMap[filters.status]
+      );
+    }
+
+    return combinedComplaints;
   };
+
+  const filteredComplaints = getFilteredComplaints();
 
   const handleLogout = () => {
     if (window.confirm("¿Estás seguro que deseas cerrar sesión?")) {
@@ -97,8 +109,6 @@ const AdminDashboard = () => {
       navigate("/admin/login");
     }
   };
-
-  const filteredComplaints = getFilteredComplaints();
 
   return (
     <div className="min-h-screen bg-gray-100">

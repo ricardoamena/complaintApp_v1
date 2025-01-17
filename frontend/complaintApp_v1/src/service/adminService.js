@@ -72,7 +72,7 @@ const adminService = {
 
       const response = await axios.put(`${API_URL}${endPoint}`, {
         status: data.status,
-        comments: data.comments,
+        comments: data.comentarios,
       });
       return response.data;
     } catch (error) {
