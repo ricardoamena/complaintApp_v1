@@ -65,7 +65,7 @@ const AdminDashboard = () => {
     try {
       await adminService.updateComplaintStatus(complaint.id, complaint.type, {
         status: newStatus,
-        comments: comments,
+        comentarios: comments,
       });
       await loadComplaints();
     } catch (error) {
@@ -111,7 +111,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen overflow-y-auto max-h-screen bg-gray-100">
       <div className="bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
