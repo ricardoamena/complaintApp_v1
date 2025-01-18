@@ -43,12 +43,12 @@ const ComplaintCard = ({ complaint, onStatusUpdate }) => {
         <div className="flex items-center">
           <span
             className={`px-2 py-1 rounded text-sm ${
-              complaint.status === "resolved"
+              complaint.status === "Resuelto"
                 ? "bg-green-100 text-green-800"
                 : "bg-yellow-100 text-yellow-800"
             }`}
           >
-            {complaint.status === "resolved" ? "Resuelto" : "Pendiente"}
+            {complaint.status}
           </span>
         </div>
       </div>

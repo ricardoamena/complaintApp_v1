@@ -37,8 +37,8 @@ const adminService = {
 
   getAllComplaints: async () => {
     try {
-      const response = await axios.get(`${API_URL}/complaints`);
-      return response.datav || [];
+      const response = await axios.get(`${API_URL}/admin/complaints`);
+      return response.data || [];
     } catch (error) {
       console.error("Error:", error);
       throw (
@@ -49,7 +49,7 @@ const adminService = {
 
   getAllAnonyComplaints: async () => {
     try {
-      const response = await axios.get(`${API_URL}/anony-complaints`);
+      const response = await axios.get(`${API_URL}/admin/anony-complaints`);
       return response.data || [];
     } catch (error) {
       console.error("Error:", error);
@@ -66,13 +66,16 @@ const adminService = {
   updateComplaintStatus: async (id, type, data) => {
     try {
       const endPoint =
-        type === "identified"
-          ? `/admin/complaints/${id}`
-          : `/admin/anony-complaints/${id}`;
+        type === "anonymous"
+          ? `/admin/anony-complaints/${id}`
+          : `/admin/complaints/${id}`;
+
+      console.log("Endpoint:", `${API_URL}${endPoint}`); // Para debug
+      console.log("Data being sent:", data);
 
       const response = await axios.put(`${API_URL}${endPoint}`, {
         status: data.status,
-        comments: data.comentarios,
+        comentarios: data.comentarios,
       });
       return response.data;
     } catch (error) {

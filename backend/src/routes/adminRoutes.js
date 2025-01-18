@@ -5,15 +5,35 @@ const {
   markComplaint,
   markAnonyComplaint,
 } = require("../controllers/adminControllers");
+const {
+  updateAnonyComplaint,
+  deleteAnonyComplaint,
+  getAllAnonyComplaints,
+} = require("../controllers/anonyComplaintControllers");
+const { getAllComplaints } = require("../controllers/complaintControllers");
 const verifyToken = require("../../src/middlewares/authMiddelware");
 
-//Ruta para login de administrador
+//Login de administrador
 router.post("/login", loginAdmin);
 
-//Ruta para marcar una denuncia con identificacion, como resuelta
-router.put("/complaints/:id", verifyToken, markComplaint);
+//Obtener todas las denuncias
+router.get("/complaints", verifyToken, getAllComplaints);
 
-// Ruta para marcar una denuncia anónima, como resuelta
-router.put("/anony-complaints/:id", verifyToken, markAnonyComplaint);
+//Obtener todas las denuncias anónimas
+router.get("/anony-complaints", verifyToken, getAllAnonyComplaints);
+
+
+// Ruta para marcar una denuncia anónima, como resuelta y con comentarios
+router.put(
+  "/anony-complaints/:id",
+  verifyToken,
+
+  updateAnonyComplaint
+);
+
+
+
+// Ruta para eliminar una denuncia anónima
+router.delete("/:id", verifyToken, deleteAnonyComplaint);
 
 module.exports = router;

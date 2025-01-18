@@ -40,12 +40,12 @@ const AdminDashboard = () => {
         identified: normalComplaints.map((complaint) => ({
           ...complaint,
           type: "identified",
-          status: complaint.status || "pending",
+          status: complaint.status || "Pendiente",
         })),
         anonymous: anonComplaints.map((complaint) => ({
           ...complaint,
           type: "anonymous",
-          status: complaint.status || "pending",
+          status: complaint.status || "Pendiente",
         })),
         loading: false,
         error: null,
@@ -60,12 +60,20 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleStatusUpdate = async (complaint, newStatus, comments) => {
+  const handleStatusUpdate = async (complaint, newStatus, comentarios) => {
     setError(null);
     try {
+      console.log("Datos a enviar:", {
+        id: complaint.id,
+        type: complaint.type,
+        data: {
+          status: newStatus,
+          comentarios: comentarios,
+        },
+      });
       await adminService.updateComplaintStatus(complaint.id, complaint.type, {
         status: newStatus,
-        comentarios: comments,
+        comentarios: comentarios,
       });
       await loadComplaints();
     } catch (error) {

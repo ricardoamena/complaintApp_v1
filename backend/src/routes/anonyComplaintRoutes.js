@@ -5,11 +5,11 @@ const {
   createAnonyComplaint,
   getAllAnonyComplaints,
   getOneAnonyComplaint,
-  updateAnonyComplaint,
   updateClientAnonyComplaint,
-  deleteAnonyComplaint,
   deleteClientAnonyComplaint,
   getAnonyComplaintByTicket,
+  updateAnonyComplaint,
+  deleteAnonyComplaint,
 } = require("../controllers/anonyComplaintControllers");
 
 // Configurar multer para manejar la carga de archivos
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     cb(null, "src/uploads/");
   },
   filename: (req, file, cb) => {
-    //Validad tipo de archivo
+    // Validar tipo de archivo
     const fileTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
     if (!fileTypes.includes(file.mimetype)) {
       cb(new Error("Formato de archivo no permitido"));
@@ -31,7 +31,7 @@ const upload = multer({
   storage,
   limits: {
     fileSize: 1024 * 1024 * 2, // 2MB
-    files: 2, // Maximo de archivos
+    files: 2, // Máximo de archivos
   },
 });
 
@@ -46,19 +46,15 @@ router.get("/", getAllAnonyComplaints);
 // Ruta para obtener una denuncia anónima por ID
 router.get("/:id", getOneAnonyComplaint);
 
-// Ruta para actualizar una denuncia anónima
-router.put("/:id", updateAnonyComplaint);
-
 // Ruta para actualizar una denuncia anónima por parte del cliente
 router.put("/client/:id", updateClientAnonyComplaint);
-
-// Ruta para eliminar una denuncia anónima
-router.delete("/:id", deleteAnonyComplaint);
 
 // Ruta para eliminar una denuncia anónima por parte del cliente
 router.delete("/client/:id", deleteClientAnonyComplaint);
 
 // Ruta para obtener una denuncia anónima por ticket y contraseña
 router.post("/ticket", getAnonyComplaintByTicket);
+
+
 
 module.exports = router;

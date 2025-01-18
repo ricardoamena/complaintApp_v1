@@ -68,14 +68,17 @@ const getOneAnonyComplaint = (req, res) => {
 const updateAnonyComplaint = (req, res) => {
   const id = req.params.id;
   const data = req.body;
+  console.log("Datos recibidos para actualizar:", data);
   AnonyComplaint.update(id, data, (err, results) => {
     if (err) {
+      console.log("Error al actualizar la denuncia:", err);
       console.log(err);
       return res.status(500).json({
         success: 0,
         message: "Error al actualizar la denuncia",
       });
     }
+    console.log("Resultados de la actualización:", results);
     return res.status(200).json({
       message: "Denuncia actualizada exitosamente",
     });

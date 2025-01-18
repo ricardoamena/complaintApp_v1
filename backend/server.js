@@ -24,11 +24,13 @@ app.use((err, req, res, next) => {
 app.use("/uploads", express.static(path.join(__dirname, "src/uploads")));
 
 // Rutas
-// Denuncias
-app.use("/api/complaints", complaintRoutes);
-app.use("/api/anony-complaints", anonyComplaintRoutes);
+
 // Panel admin
 app.use("/api/admin", adminRoutes);
+
+// Denuncias
+app.use("/api/public/complaints", complaintRoutes);
+app.use("/api/public/anony-complaints", anonyComplaintRoutes);
 
 app.get("/", (req, res) => {
   res.send("¡Hola, mundo!");

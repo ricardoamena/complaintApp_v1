@@ -59,18 +59,18 @@ const AnonyComplaint = {
 
   update: (id, data, callback) => {
     const query =
-      "UPDATE denuncia_anonima SET titulo = ?, descripcion = ?, imagenes = ?, status = ?, comentarios = ? WHERE id = ?";
+      "UPDATE denuncia_anonima SET status = ?, comentarios = ? WHERE id = ?";
     conexion.query(
       query,
-      [
-        data.titulo || null,
-        data.descripcion || null,
-        data.imagenes || null,
-        data.status || "Pendiente",
-        data.comentario || "",
-        id,
-      ],
-      callback
+      [data.status || "Pendiente", data.comentarios || "", id],
+      (err, results) => {
+        if (err) {
+          console.log("Error en la consulta SQL:", err); // Log adicional
+          return callback(err);
+        }
+        console.log("Resultados de la actualización:", results); // Log adicional
+        return callback(null, results);
+      }
     );
   },
 
