@@ -1,0 +1,12 @@
+[build]
+  base = "."
+  command = "npm run build"
+  publish = "frontend/dist"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/backend/server.js"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "14"  # O tu versión específica
