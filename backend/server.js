@@ -11,11 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Middleware
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
-  })
-);
+const cors = require('cors');
+app.use(cors({
+  origin: ['https://tu-dominio.netlify.app', 'http://localhost:5173']
+}));
+
 app.use(express.json());
 
 // Manejo de errores globales
