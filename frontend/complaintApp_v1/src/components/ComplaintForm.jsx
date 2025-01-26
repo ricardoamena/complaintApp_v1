@@ -250,115 +250,160 @@ const ComplaintForm = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 shadow-md">
-      <h2 className="text-2xl mb-4 mt-4">Denuncia con identificación</h2>
-      <div className="h-2 w-full bg-gray-300 border rounded-md "></div>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="nombre"
-          placeholder="Nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-          className="w-full p-2 border rounded shadow-md"
-        />
-        <input
-          type="text"
-          name="apellido"
-          placeholder="Apellido"
-          value={formData.apellido}
-          onChange={handleChange}
-          className="w-full p-2 border rounded shadow-md"
-        />
-        <input
-          type="text"
-          name="celular"
-          placeholder="Celular"
-          value={formData.celular}
-          onChange={handleChange}
-          className="w-full p-2 border rounded shadow-md"
-        />
-        <input
-          type="text"
-          name="titulo"
-          placeholder="Título"
-          value={formData.titulo}
-          onChange={handleChange}
-          className="w-full p-2 border rounded shadow-md"
-        />
-        <textarea
-          name="descripcion"
-          placeholder="Descripción"
-          value={formData.descripcion}
-          onChange={handleChange}
-          className="w-full p-2 border rounded shadow-md"
-          rows="4"
-        />
-        <input
-          type="email"
-          name="mail"
-          placeholder="Correo Electrónico"
-          value={formData.mail}
-          onChange={handleChange}
-          className="w-full p-2 border rounded shadow-md"
-        />
-        <div>
-          <input
-            type="file"
-            name="imagenes"
-            id="imagenes"
-            onChange={handleChange}
-            className="w-full p-2 border rounded shadow-md"
-            multiple
-            accept="image/*"
-          />
-          <p className="text-sm text-gray-600 mt-1">
-            Puedes seleccionar hasta 2 imágenes
-          </p>
-        </div>
-        <div className="flex gap-4 flex-wrap">
-          {imagePreviews.map((image, index) => (
-            <div key={index} className="relative">
-              <img
-                src={image}
-                alt={`Preview ${index + 1}`}
-                className="h-32 w-32 rounded border object-cover"
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Denuncia con Identificación
+        </h2>
+
+        <div className="h-1 w-full bg-blue-500 mb-6"></div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-700 mb-2">Nombre</label>
+              <input
+                type="text"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Tu nombre"
+                required
               />
-              <button
-                type="button"
-                onClick={() => removeImage(index)}
-                className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
-              >
-                ×
-              </button>
             </div>
-          ))}
-        </div>
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña - 6 dígitos numéricos"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full p-2 border rounded shadow-md"
-        />
-        <p className="text-gray-600 text-sm">
-          Usa una contraseña a elección, junto al código del ticket para poder
-          consultar sobre el estado de tu denuncia ingresando a la sección de
-          Consulta de Denuncias.
-        </p>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`py-2 px-4 rounded transition-colors ${
-            isSubmitting
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
-          } text-white`}
-        >
-          {isSubmitting ? "Enviando..." : "Enviar Denuncia"}
-        </button>
-      </form>
+            <div>
+              <label className="block text-gray-700 mb-2">Apellido</label>
+              <input
+                type="text"
+                name="apellido"
+                value={formData.apellido}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Tu apellido"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 mb-2">Celular</label>
+            <input
+              type="text"
+              name="celular"
+              value={formData.celular}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Número de contacto"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 mb-2">Título</label>
+            <input
+              type="text"
+              name="titulo"
+              value={formData.titulo}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Título de la denuncia"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 mb-2">Descripción</label>
+            <textarea
+              name="descripcion"
+              value={formData.descripcion}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Describe los detalles de tu denuncia"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 mb-2">Correo Electrónico</label>
+            <input
+              type="email"
+              name="mail"
+              value={formData.mail}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Tu correo electrónico"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 mb-2">Imágenes de Evidencia</label>
+            <input
+              type="file"
+              name="imagenes"
+              id="imagenes"
+              onChange={handleChange}
+              multiple
+              accept="image/*"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <p className="text-sm text-gray-600 mt-2">
+              Puedes subir hasta 2 imágenes (máximo 5MB cada una)
+            </p>
+          </div>
+
+          {imagePreviews.length > 0 && (
+            <div className="flex gap-4 flex-wrap">
+              {imagePreviews.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={image}
+                    alt={`Vista previa ${index + 1}`}
+                    className="h-32 w-32 rounded-lg border object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div>
+            <label className="block text-gray-700 mb-2">Contraseña</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="6 dígitos numéricos"
+              required
+            />
+            <p className="text-sm text-gray-600 mt-2">
+              Usa una contraseña de 6 dígitos para consultar tu denuncia
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full py-3 rounded-lg transition-colors ${
+              isSubmitting
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700 text-white"
+            }`}
+          >
+            {isSubmitting ? "Enviando..." : "Enviar Denuncia"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

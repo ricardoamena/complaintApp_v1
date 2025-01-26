@@ -87,6 +87,28 @@ const adminService = {
     }
   },
 
+  //Verificar si el usuario esta autenticado
+  isAutenhticated: () => {
+    const token = localStorage.getItem("adminToken");
+    if (token) {
+      return true;
+    }
+    return false;
+  },
+
+  //Metodo logout
+  logout: () => {
+    try {
+      localStorage.removeItem("adminToken");
+      delete apiClient.defaults.headers.common["Authorization"];
+      return true;
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      return false;
+    }   
+    
+  },
+
   getAllComplaints: async () => {
     try {
       const response = await apiClient.get("/admin/complaints");
