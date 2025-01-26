@@ -11,10 +11,15 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Middleware
-const cors = require('cors');
-app.use(cors({
-  origin: ['https://tu-dominio.netlify.app', 'http://localhost:5173']
-}));
+app.use(
+  cors({
+    origin: [
+      "https://tu-dominio.netlify.app",
+      "http://localhost:5173",
+      "http://localhost:4173",
+    ],
+  })
+);
 
 app.use(express.json());
 
@@ -30,14 +35,13 @@ app.use("/uploads", (req, res, next) => {
   console.log("Full path:", path.join(__dirname, "src/uploads", req.url));
   // Verificar si el archivo existe
   const filePath = path.join(__dirname, "src/uploads", req.url);
-  const exists = require('fs').existsSync(filePath);
+  const exists = require("fs").existsSync(filePath);
   console.log("File exists:", exists);
   next();
 });
 
 // Configura el directorio de archivos estáticos
 app.use("/uploads", express.static(path.join(__dirname, "src/uploads")));
-
 
 // Rutas
 

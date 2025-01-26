@@ -13,8 +13,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   return (
     <>
-      <div className="h-screen overflow-hidden">
+      <div className="h-screen flex flex-col">
         <Navbar />
+        <div className="flex-grow overflow-auto">
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/complaint" element={<ComplaintForm />} />
@@ -30,6 +31,7 @@ function App() {
             }
           />
         </Routes>
+        </div>
       </div>
     </>
   );

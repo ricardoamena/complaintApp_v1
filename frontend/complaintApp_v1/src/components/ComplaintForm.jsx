@@ -84,7 +84,6 @@ const ComplaintForm = () => {
     setTicket(null);
   };
 
-
   //AnonyComplaint hacemos validaciones generales, en ComplaintForm hacemos validaciones específicas
   const validateForm = () => {
     if (!formData.nombre.trim()) {
@@ -120,42 +119,42 @@ const ComplaintForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-  
+
     setIsSubmitting(true);
-    
+
     const formDataToSend = new FormData();
-    
+
     // Añadir todos los campos del formulario
     Object.keys(formData).forEach((key) => {
       if (key !== "imagenes" && formData[key]) {
         formDataToSend.append(key, formData[key]);
       }
     });
-  
+
     // Añadir imágenes
     formData.imagenes.forEach((image) => {
       formDataToSend.append("imagenes", image);
     });
-  
+
     try {
       const response = await publicService.sendComplaint(formDataToSend);
-      
+
       // Establecer ticket recibido
       setTicket(response.ticket);
-      
+
       // Resetear formulario
       resetForm();
     } catch (error) {
       console.error("Error al enviar la denuncia:", error);
-      
+
       // Mensaje de error más descriptivo
       alert(
-        error.message || 
-        "Hubo un error al enviar la denuncia. Por favor, intenta nuevamente."
+        error.message ||
+          "Hubo un error al enviar la denuncia. Por favor, intenta nuevamente."
       );
     } finally {
       setIsSubmitting(false);
@@ -167,25 +166,25 @@ const ComplaintForm = () => {
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8">
           <div className="text-center">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               className="h-16 w-16 mx-auto mb-6 text-green-500"
-              fill="none" 
-              viewBox="0 0 24 24" 
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-  
+
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               ¡Denuncia Enviada Exitosamente!
             </h2>
-  
+
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
               <p className="text-blue-700">
                 Código de seguimiento para tu denuncia:
@@ -194,12 +193,12 @@ const ComplaintForm = () => {
                 <span className="text-xl font-mono bg-blue-100 px-4 py-2 rounded-lg tracking-widest">
                   {ticket}
                 </span>
-                
+
                 <button
                   onClick={copyTicket}
                   className={`p-2 rounded-full transition-colors ${
-                    isCopied 
-                      ? "bg-green-500 text-white" 
+                    isCopied
+                      ? "bg-green-500 text-white"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                   }`}
                   title="Copiar código"
@@ -212,32 +211,32 @@ const ComplaintForm = () => {
                 </button>
               </div>
             </div>
-  
+
             <div className="space-y-4">
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="font-semibold text-gray-700 mb-2">
                   ¿Qué hacer a continuación?
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Guarda tu código de ticket y contraseña. 
-                  Podrás consultar el estado de tu denuncia en cualquier momento.
+                  Guarda tu código de ticket y contraseña. Podrás consultar el
+                  estado de tu denuncia en cualquier momento.
                 </p>
               </div>
-  
+
               <button
                 onClick={handleStartNewComplaint}
                 className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
               >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5" 
-                  viewBox="0 0 20 20" 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
                   fill="currentColor"
                 >
-                  <path 
-                    fillRule="evenodd" 
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" 
-                    clipRule="evenodd" 
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                    clipRule="evenodd"
                   />
                 </svg>
                 Realizar Nueva Denuncia
@@ -250,7 +249,7 @@ const ComplaintForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="h-screen bg-gray-100 flex items-center justify-center p-4 overflow-auto">
       <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Denuncia con Identificación
@@ -326,7 +325,9 @@ const ComplaintForm = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700 mb-2">Correo Electrónico</label>
+            <label className="block text-gray-700 mb-2">
+              Correo Electrónico
+            </label>
             <input
               type="email"
               name="mail"
@@ -339,7 +340,9 @@ const ComplaintForm = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700 mb-2">Imágenes de Evidencia</label>
+            <label className="block text-gray-700 mb-2">
+              Imágenes de Evidencia
+            </label>
             <input
               type="file"
               name="imagenes"
