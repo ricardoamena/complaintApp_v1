@@ -5,7 +5,7 @@ const createComplaint = (req, res) => {
   const data = req.body;
   data.ticket = uuidv4();
   if (req.files && req.files.length > 0) {
-    data.imagenes = req.files.map((file) => file.path.replace(/\\/g, "/"));
+    data.imagenes = req.files.map((file) => file.filename).join(",");
   }
   Complaint.create(data, (err, results) => {
     if (err) {
@@ -50,7 +50,11 @@ const getComplaintByTicket = (req, res) => {
       });
     }
 
-    return res.status(200).json(results[0]);
+    // Devolver en el formato esperado por el frontend
+    return res.status(200).json({
+      success: 1,
+      complaint: results[0], // Devolver el primer resultado
+    });
   });
 };
 

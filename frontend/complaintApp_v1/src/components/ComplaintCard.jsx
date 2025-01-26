@@ -1,32 +1,62 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import ImageModal from "./ImageModal";
+
+const BASE_URL = "http://localhost:7070/uploads/";
 
 // Componente para mostrar una tarjeta de denuncia individual
 const ComplaintCard = ({ complaint, onStatusUpdate }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [comentarios, setComentarios] = useState(complaint.comentarios || "");
-
+  const [selectedImage, setSelectedImage] = useState(null);
   const [status, setStatus] = useState(complaint.status);
   const [imagePreviews, setImagePreviews] = useState([]);
 
   useEffect(() => {
     if (complaint.imagenes) {
-      let images = [];
+      console.log("Imágenes recibidas:", complaint.imagenes);
+  
+      let imagePaths = [];
       if (typeof complaint.imagenes === "string") {
-        images = complaint.imagenes.split(",").map((img) => img.trim());
+        imagePaths = complaint.imagenes
+          .split(",")
+          .map((img) => img.trim())
+          .filter(Boolean)
+          .map((img) => {
+            // Limpiamos la ruta y el nombre del archivo
+            const cleanPath = img.replace("src/uploads/", "").replace(/\s+/g, '-');
+            return cleanPath;
+          });
       } else if (Array.isArray(complaint.imagenes)) {
-        images = complaint.imagenes;
+        imagePaths = complaint.imagenes
+          .filter(Boolean)
+          .map((img) => img.replace("src/uploads/", "").replace(/\s+/g, '-'));
       }
-      setImagePreviews(images);
+  
+      const imageUrls = imagePaths.map((path) => {
+        // Aseguramos que la ruta esté correctamente codificada
+        const encodedPath = encodeURIComponent(path.replace(/\\/g, '/'));
+        return `${BASE_URL}${encodedPath}`;
+      });
+  
+      console.log("URLs de imágenes generadas:", imageUrls);
+      setImagePreviews(imageUrls);
     }
   }, [complaint.imagenes]);
 
-  const handleUpdate = (e) => {
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    onStatusUpdate(complaint, status, comentarios);
+    await onStatusUpdate(complaint, status, comentarios);
     setIsEditing(false);
   };
+
+  const handleImageClick = (imageUrl) => {
+    console.log("Imagen clickeada:", imageUrl); 
+    setSelectedImage(imageUrl);
+  };
+  console.log("Estado de selectedImage:", selectedImage);
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
@@ -82,18 +112,34 @@ const ComplaintCard = ({ complaint, onStatusUpdate }) => {
             <div>
               <h3 className="font-semibold mb-2">Imágenes adjuntas:</h3>
               <div className="grid grid-cols-2 gap-4">
-                {imagePreviews.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Evidencia ${index + 1}`}
-                    className="w-full h-48 object-cover rounded"
-                  />
+                {imagePreviews.map((imageUrl, index) => (
+                  <div key={index} className="cursor-pointer relative group">
+                    <img
+                      src={imageUrl}
+                      alt={`Evidencia ${index + 1}`}
+                      className="w-full h-48 object-cover rounded transition-all duration-300 group-hover:opacity-90"
+                      onClick={() => handleImageClick(imageUrl)}
+                      onError={(e) => {
+                        console.error("Error cargando imagen:", imageUrl);
+                        console.log("Ruta completa:", e.target.src);
+                      }}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="bg-black bg-opacity-50 text-white px-3 py-1 rounded">
+                        Click para ampliar
+                      </span>
+                    </div>
+                  </div>
                 ))}
               </div>
+              {selectedImage && (
+                <ImageModal
+                  imageUrl={selectedImage}
+                  onClose={() => setSelectedImage(null)}
+                />
+              )}
             </div>
           )}
-
           {complaint.comentarios && (
             <div>
               <h3 className="font-semibold mb-2">Comentarios:</h3>

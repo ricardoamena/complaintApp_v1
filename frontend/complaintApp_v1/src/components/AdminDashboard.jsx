@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import adminService from "../service/adminService.js";
 import ComplaintCard from "./ComplaintCard";
 
+
 const AdminDashboard = () => {
   // Estados separados para cada tipo de denuncia
   const [complaints, setComplaints] = useState({
@@ -13,20 +14,30 @@ const AdminDashboard = () => {
   });
 
   const [filters, setFilters] = useState({
-    status: "all", // 'all', 'pending', 'resolved'
-    type: "all", // 'all', 'identified', 'anonymous'
+    status: "all",
+    type: "all",
   });
-  const [isLoading, setIsLoading] = useState(false);
+ 
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
-    if (!adminService.checkAuth()) {
-      navigate("/admin/login");
-      return;
-    }
-    loadComplaints();
-  }, [navigate]);
+    const loadInitialData = async () => {
+      try {
+        await loadComplaints();
+      } catch (error) {
+        console.error("Error cargando datos iniciales:", error);
+        setComplaints(prev => ({
+          ...prev,
+          loading: false,
+          error: "Error al cargar las denuncias"
+        }));
+      }
+    };
+  
+    loadInitialData();
+  }, []); 
 
   const loadComplaints = async () => {
     setComplaints((prev) => ({ ...prev, loading: true, error: null }));
@@ -110,6 +121,7 @@ const AdminDashboard = () => {
   };
 
   const filteredComplaints = getFilteredComplaints();
+
 
   const handleLogout = () => {
     if (window.confirm("¿Estás seguro que deseas cerrar sesión?")) {

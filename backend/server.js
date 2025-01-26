@@ -11,7 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  })
+);
 app.use(express.json());
 
 // Manejo de errores globales
@@ -20,8 +24,20 @@ app.use((err, req, res, next) => {
   res.status(500).send("¡Algo salió mal!");
 });
 
+// Middleware para logging que te ayude a debuggear
+app.use("/uploads", (req, res, next) => {
+  console.log("Requested file:", req.url);
+  console.log("Full path:", path.join(__dirname, "src/uploads", req.url));
+  // Verificar si el archivo existe
+  const filePath = path.join(__dirname, "src/uploads", req.url);
+  const exists = require('fs').existsSync(filePath);
+  console.log("File exists:", exists);
+  next();
+});
+
 // Configura el directorio de archivos estáticos
 app.use("/uploads", express.static(path.join(__dirname, "src/uploads")));
+
 
 // Rutas
 

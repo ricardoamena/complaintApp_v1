@@ -7,10 +7,16 @@ const conexion = require("../config/db");
 require("dotenv").config();
 
 const loginAdmin = (req, res) => {
-  // Login del administrador
+  console.log("Intento de login recibido:", { 
+    username: req.body.username,
+    passwordLength: req.body.password?.length 
+  });
+
   const { username, password } = req.body;
-  // Validar que se proporcionen las credenciales
+
+  // Validación de campos
   if (!username || !password) {
+    console.log("Faltan campos requeridos");
     return res.status(400).json({
       success: 0,
       message: "Usuario y contraseña son requeridos"
@@ -18,42 +24,69 @@ const loginAdmin = (req, res) => {
   }
 
   if (username.length < 3 || password.length < 6) {
+    console.log("Credenciales no cumplen con longitud mínima");
     return res.status(400).json({
       success: 0,
-      message: "Credenciales inválidas"
+      message: "Las credenciales deben tener al menos 3 y 6 caracteres respectivamente"
     });
   }
+
   // Buscar el admin en la base de datos
   Admin.getByUsername(username, (err, results) => {
     if (err) {
-      console.log(err);
+      console.error("Error en consulta a base de datos:", err);
       return res.status(500).json({
         success: 0,
-        message: "Error al obtener el usuario",
+        message: "Error al verificar las credenciales",
       });
     }
+
     if (results.length === 0) {
+      console.log("Usuario no encontrado:", username);
       return res.status(401).json({
         success: 0,
         message: "Usuario o contraseña incorrectos",
       });
     }
+
     const admin = results[0];
-    const passwordIsValid = bcrypt.compareSync(password, admin.password);
-    if (!passwordIsValid) {
-      return res.status(401).json({
+    console.log("Usuario encontrado, verificando contraseña");
+
+    try {
+      const passwordIsValid = bcrypt.compareSync(password, admin.password);
+      
+      if (!passwordIsValid) {
+        console.log("Contraseña inválida para usuario:", username);
+        return res.status(401).json({
+          success: 0,
+          message: "Usuario o contraseña incorrectos",
+        });
+      }
+
+      // Generar token
+      const token = jwt.sign(
+        { 
+          id: admin.id,
+          username: admin.username // Agregamos más información al token
+        }, 
+        process.env.SECRET, 
+        { expiresIn: 86400 }
+      );
+
+      console.log("Login exitoso para usuario:", username);
+      
+      return res.status(200).json({
+        success: 1,
+        message: "Login exitoso",
+        token: token,
+      });
+    } catch (error) {
+      console.error("Error en la verificación de contraseña:", error);
+      return res.status(500).json({
         success: 0,
-        message: "Usuario o contraseña incorrectos",
+        message: "Error al verificar las credenciales",
       });
     }
-    const token = jwt.sign({ id: admin.id }, process.env.SECRET, {
-      expiresIn: 86400, // 24 horas
-    });
-    return res.status(200).json({
-      success: 1,
-      message: "Login exitoso",
-      token: token,
-    });
   });
 };
 

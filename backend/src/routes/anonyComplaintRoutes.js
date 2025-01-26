@@ -11,29 +11,21 @@ const {
   updateAnonyComplaint,
   deleteAnonyComplaint,
 } = require("../controllers/anonyComplaintControllers");
+const path = require("path");
 
-// Configurar multer para manejar la carga de archivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "src/uploads/");
+    const uploadPath = path.join(__dirname, "../uploads"); 
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    // Validar tipo de archivo
-    const fileTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
-    if (!fileTypes.includes(file.mimetype)) {
-      cb(new Error("Formato de archivo no permitido"));
-      return;
-    }
-    cb(null, Date.now() + "-" + file.originalname);
+    // Limpiamos el nombre del archivo reemplazando espacios con guiones
+    const cleanFileName = file.originalname.replace(/\s+/g, '-');
+    cb(null, Date.now() + "-" + cleanFileName);
   },
 });
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 1024 * 1024 * 2, // 2MB
-    files: 2, // Máximo de archivos
-  },
-});
+
+const upload = multer({ storage });
 
 // Denuncias anónimas
 

@@ -5,7 +5,7 @@ const createAnonyComplaint = (req, res) => {
   const data = req.body;
   data.ticket = uuidv4();
   if (req.files && req.files.length > 0) {
-    data.imagenes = req.files.map((file) => file.path.replace(/\\/g, "/"));
+    data.imagenes = req.files.map((file) => file.filename).join(",");
   }
   AnonyComplaint.create(data, (err, results) => {
     if (err) {
@@ -34,7 +34,20 @@ const getAnonyComplaintByTicket = (req, res) => {
         message: "Error al obtener la denuncia anónima",
       });
     }
-    return res.status(200).json(results);
+
+    // Si no se encuentra ninguna denuncia
+    if (!results || results.length === 0) {
+      return res.status(404).json({
+        success: 0,
+        message: "No se encontró la denuncia con ese ticket y contraseña",
+      });
+    }
+
+    // Devolver en el formato esperado por el frontend
+    return res.status(200).json({
+      success: 1,
+      complaint: results[0]  // Devolver el primer resultado
+    });
   });
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { sendAnonyComplaint } from "../service/apiService.js";
+import publicService from "../service/apiService.js";
 import { Check, Copy } from "lucide-react";
 
 const AnonyComplaintForm = () => {
@@ -115,7 +115,7 @@ const AnonyComplaintForm = () => {
     });
 
     try {
-      const response = await sendAnonyComplaint(formDataToSend);
+      const response = await publicService.sendAnonyComplaint(formDataToSend);
       setTicket(response.ticket);
       resetForm();
     } catch (error) {
@@ -130,40 +130,86 @@ const AnonyComplaintForm = () => {
 
   if (ticket) {
     return (
-      <div className="container mx-auto p-4 shadow-md">
-        <div className="bg-blue-100 border rounded p-6 shadow-lg max-w-2xl mx-auto">
-          <h3 className="text-xl font-medium mb-4">
-            ¡Denuncia enviada exitosamente!
-          </h3>
-          <p className="mb-2">Código de seguimiento para tu denuncia:</p>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="p-4 bg-green-300 border rounded font-mono text-lg">
-              {ticket}
-            </span>
-            <button
-              onClick={copyTicket}
-              className={`p-3 rounded-full transition-colors ${
-                isCopied ? "bg-green-500" : "bg-gray-200 hover:bg-gray-300"
-              }`}
-              title="Copiar código"
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8">
+          <div className="text-center">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-16 w-16 mx-auto mb-6 text-green-500"
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
             >
-              {isCopied ? (
-                <Check className="w-5 h-5 text-white" />
-              ) : (
-                <Copy className="w-5 h-5 text-gray-600" />
-              )}
-            </button>
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
+              />
+            </svg>
+  
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              ¡Denuncia Enviada Exitosamente!
+            </h2>
+  
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+              <p className="text-blue-700">
+                Código de seguimiento para tu denuncia:
+              </p>
+              <div className="flex items-center justify-center gap-4 mt-2">
+                <span className="text-xl font-mono bg-blue-100 px-4 py-2 rounded-lg tracking-widest">
+                  {ticket}
+                </span>
+                
+                <button
+                  onClick={copyTicket}
+                  className={`p-2 rounded-full transition-colors ${
+                    isCopied 
+                      ? "bg-green-500 text-white" 
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                  title="Copiar código"
+                >
+                  {isCopied ? (
+                    <Check className="w-5 h-5" />
+                  ) : (
+                    <Copy className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+  
+            <div className="space-y-4">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-gray-700 mb-2">
+                  ¿Qué hacer a continuación?
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Guarda tu código de ticket y contraseña. 
+                  Podrás consultar el estado de tu denuncia en cualquier momento.
+                </p>
+              </div>
+  
+              <button
+                onClick={handleStartNewComplaint}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5" 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor"
+                >
+                  <path 
+                    fillRule="evenodd" 
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" 
+                    clipRule="evenodd" 
+                  />
+                </svg>
+                Realizar Nueva Denuncia
+              </button>
+            </div>
           </div>
-          <p className="text-gray-600 mb-4">
-            Guarda este código y tu contraseña para consultar posteriormente el
-            estado de tu denuncia.
-          </p>
-          <button
-            onClick={handleStartNewComplaint}
-            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors"
-          >
-            Realizar nueva denuncia
-          </button>
         </div>
       </div>
     );

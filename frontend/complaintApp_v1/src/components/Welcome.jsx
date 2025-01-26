@@ -1,34 +1,55 @@
+// src/components/Welcome.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 
 const Welcome = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-300">
-      <h1 className="text-4xl mb-6">Bienvenido a tu aplicacion de denuncias</h1>
-      <p className="flex space-x-4">
-        Esta aplicacion te va a permitir cargar denuncias identificandote o
-        bien, de forma anónima
-      </p>
-      <div className="flex space-x-4 p-6">
-        <Link
-          to="/complaint"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Denuncia con Identificación
-        </Link>
-        <Link
-          to="/anony-complaint"
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-        >
-          Denuncia Anónima
-        </Link>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-20 px-4">
+      <div className="max-w-3xl mx-auto text-center">
+        <h1 className="text-5xl font-bold text-gray-800 mb-8">
+          Sistema de Denuncias
+        </h1>
+        
+        <p className="text-xl text-gray-600 mb-12 leading-relaxed">
+          Bienvenido a nuestra plataforma de denuncias. 
+          Elija el método que mejor se adapte a sus necesidades.
+        </p>
+
+        <div className="space-y-6">
+          <div className="grid gap-4 md:grid-cols-2 max-w-2xl mx-auto">
+            <Link
+              to="/complaint"
+              className="group p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <h2 className="text-xl font-semibold text-blue-600 mb-2">
+                Denuncia Identificada
+              </h2>
+              <p className="text-gray-600 text-sm">
+                Realice su denuncia proporcionando sus datos de contacto
+              </p>
+            </Link>
+
+            <Link
+              to="/anony-complaint"
+              className="group p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <h2 className="text-xl font-semibold text-green-600 mb-2">
+                Denuncia Anónima
+              </h2>
+              <p className="text-gray-600 text-sm">
+                Presente su denuncia de manera anónima y segura
+              </p>
+            </Link>
+          </div>
+
+          <Link
+            to="/status-complaint"
+            className="inline-block mt-8 px-8 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors duration-300"
+          >
+            Consultar Estado de Denuncia
+          </Link>
+        </div>
       </div>
-      <Link
-          to="/status-complaint"
-          className="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600"
-        >
-          Consultar el estado de tu Denuncia
-        </Link>
     </div>
   );
 };
