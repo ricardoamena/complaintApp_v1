@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8080;
 app.use(
   cors({
     origin: [
-      "https://tu-dominio.netlify.app",
+      "https://complaintapp.netlify.app",
       "http://localhost:5173",
       "http://localhost:4173",
     ],
