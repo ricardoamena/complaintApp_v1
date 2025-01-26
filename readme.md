@@ -1,7 +1,8 @@
 ## Sistema de Denuncias
 
 Descripción General del Proyecto
-El Sistema de Denuncias Ciudadanas es una plataforma web integral que permite a los ciudadanos reportar incidentes de manera segura, ya sea con identificación personal o de forma anónima. La aplicación proporciona un mecanismo transparente y accesible para documentar y dar seguimiento a diversas problemáticas sociales.
+El Sistema de Denuncias es una plataforma web integral que permite a los ciudadanos/clientes reportar incidentes de manera segura, ya sea con identificación personal o de forma anónima. La aplicación proporciona un mecanismo transparente y accesible para documentar y dar seguimiento a diversas problemáticas sociales.
+Tiene un ambito de aplicacion tanto social como empresarial.
 
 ## Capturas de pantalla:
 
